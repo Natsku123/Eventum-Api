@@ -1,0 +1,30 @@
+{
+  "database": {
+    "host": "127.0.0.1",
+    "database": "[DATABASE NAME HERE]",
+    "username": "[DATABASE USERNAME HERE]",
+    "password": "[DATABASE PASSWORD HERE]"
+  },
+  "json": {
+    "templates": "/var/www/eventum-api/json/templates",
+    "form_root": "/var/www/eventum-api/json/forms",
+    "memberlist": "/var/www/eventum-api/json/jasenet.json"
+  },
+  "event_description_root": "/var/www/eventum-api/descriptions",
+  "media_root": "/var/www/eventum-media/",
+  "file_extensions": ["jpg", "jpeg", "png", "svg"],
+  "image_url": "https://[MEDIA URL HERE]/",
+  "tables": {
+    "users": "users",
+    "events": "events",
+    "eventImages": "eventImages",
+    "roles": "roles",
+    "humans": "humans",
+    "eventParticipants": "eventParticipants",
+    "prices": "prices",
+    "limits": "limits"
+  },
+  "secret": "[GENERATE SECRET OF YOUR CHOICE HERE]",
+  "log_file": "logs/generic.log",
+  "setup_done": false
+}
