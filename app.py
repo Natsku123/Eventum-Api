@@ -84,7 +84,7 @@ def setup():
             return "Setup failed."
 
 
-@app.route('/v1.0/tokens/create/', methods=['POST'])
+@app.route('/v1.0/users/create/', methods=['POST'])
 @jwt_required()
 def new_user():
     """
