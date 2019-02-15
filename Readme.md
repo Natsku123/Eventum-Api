@@ -96,7 +96,16 @@ apt-get update
 apt-get install mariadb-server
 apt-get install nginx
 apt-get install uwsgi
-apt-get install certbot
+```
+
+To install certbot (run as root or sudo) (If you used other OS than Ubuntu please check [this site](https://certbot.eff.org/) for installation guide):
+```bash
+apt-get update
+apt-get install software-properties-common
+add-apt-repository universe
+add-apt-repository ppa:certbot/certbot
+apt-get update
+apt-get install certbot python-certbot-nginx
 ```
 
 Install libraries (make sure they end up as python3.6>= libraries):
@@ -121,10 +130,10 @@ GRANT ALL PRIVILEGES ON Eventum.* TO 'eventum-user'@'localhost' IDENTIFIED BY 'n
 FLUSH PRIVILEGES;
 ```
 
-In "config" folder there is a file called "config.template.json". Fill out all needed info and rename it to "config.json".
+In `config/` folder there is a file called `config.template.json`. Fill out all needed info and rename it to `config.json`.
 Be sure not to modify any keys!
 
-Also fill out "uwsgi.template.ini" and save it as "uwsgi.ini".
+Also fill out `uwsgi.template.ini` and save it as `uwsgi.ini`.
 
 Create uwsgi parameters (run with root or sudo):
 ```bash
@@ -142,7 +151,7 @@ And fill it with this:
 ```bash
 server {
     listen 80;
-    server_name example.com www.example.com;
+    server_name api.example.com www.api.example.com;
     root /var/www/eventum-api/;
 
     location / {
@@ -150,6 +159,11 @@ server {
         uwsgi_pass unix:/var/www/eventum-api/config/uwsgi.sock;
     }
 }
+```
+
+Enable your configuration (run with root or sudo):
+```bash
+ln -s /etc/nginx/sites-available/eventum-api.conf /etc/nginx/sites-enabled/eventum-api.conf
 ```
 
 Test that your configuration works (run with root or sudo):
@@ -222,5 +236,19 @@ If you get problems with permissions after this, run (as root or sudo):
 ```bash
 chown [your-user-in-uwsgi.ini]:www-data /var/www/eventum-api/ -R
 ```
+
+To complete your installation you should visit this page:
+```
+https://api.example.com/setup/
+```
+And remember to replace `api.example.com` with your own domain!
+
+Then you should be greeted with a text that tells you if your setup succeeded.
+
+Now head back to MySQL and type this to create yourself the first user:
+```MySQL
+INSERT INTO users (`username`, `password`) VALUES ('[desired username]', ENCRYPT('[random generated 64 character password]', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))));
+```
+Now you can access protected pages and information in Eventum.
 
 Next you probably should read [Eventum](https://github.com/Natsku123/Eventum)'s installation guide, if setting it up was the point.
